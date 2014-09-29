@@ -89,12 +89,16 @@ public class AlarmsScheduler implements IAlarmsScheduler {
         mContext = context;
         queue = new PriorityQueue<ScheduledAlarm>();
         this.log = logger;
-        context.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                notifyListeners();
-            }
-        }, new IntentFilter(Intents.REQUEST_LAST_SCHEDULED_ALARM));
+        try {
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    notifyListeners();
+                }
+            }, new IntentFilter(Intents.REQUEST_LAST_SCHEDULED_ALARM));
+        } catch (Exception e) {
+            // TODO: remove this when we use some other mechanism for events
+        }
     }
 
     @Override

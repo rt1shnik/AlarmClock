@@ -216,18 +216,41 @@ public class AlarmContainer implements IAlarmContainer {
         state = "";
     }
 
+    public AlarmContainer(Logger logger, Context context, int id) {
+        log = logger;
+        mContext = context;
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        hour = c.get(Calendar.HOUR_OF_DAY);
+        minutes = c.get(Calendar.MINUTE);
+        vibrate = true;
+        daysOfWeek = new DaysOfWeek(0);
+        nextTime = c;
+        alert = null;
+        prealarm = false;
+
+        this.id = id;
+        state = "";
+    }
+
     /**
      * Persist data in the database
      */
     @Override
     public void writeToDb() {
-        ContentValues values = createContentValues();
-        Intent intent = new Intent(mContext, DataBaseService.class);
-        intent.setAction(DataBaseService.SAVE_ALARM_ACTION);
-        intent.putExtra("extra_values", values);
-        intent.putExtra(Intents.EXTRA_ID, id);
-        WakeLockManager.getWakeLockManager().acquirePartialWakeLock(intent, "forDBService");
-        mContext.startService(intent);
+        try {
+            ContentValues values = createContentValues();
+            Intent intent = new Intent(mContext, DataBaseService.class);
+            intent.setAction(DataBaseService.SAVE_ALARM_ACTION);
+            intent.putExtra("extra_values", values);
+            intent.putExtra(Intents.EXTRA_ID, id);
+            WakeLockManager.getWakeLockManager().acquirePartialWakeLock(intent, "forDBService");
+            mContext.startService(intent);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
     }
 
     private ContentValues createContentValues() {

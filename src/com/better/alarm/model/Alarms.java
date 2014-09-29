@@ -31,12 +31,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 
 import com.better.alarm.model.interfaces.Alarm;
 import com.better.alarm.model.interfaces.AlarmNotFoundException;
 import com.better.alarm.model.interfaces.IAlarmsManager;
 import com.better.alarm.model.interfaces.Intents;
 import com.better.alarm.model.persistance.AlarmContainer;
+import com.github.androidutils.handler.HandlerFactory;
 import com.github.androidutils.logger.Logger;
 
 /**
@@ -59,11 +62,13 @@ public class Alarms implements IAlarmsManager {
     private final AlarmStateNotifier broadcaster;
 
     private final DatabaseRetryCountDownTimer databaseRetryCountDownTimer;
+    private final HandlerFactory handlerFactory;
 
     Alarms(Context context, Logger logger, IAlarmsScheduler alarmsScheduler) {
         mContext = context;
         log = logger;
         mAlarmsScheduler = alarmsScheduler;
+        handlerFactory = new HandlerFactory(Looper.getMainLooper());
 
         mContentResolver = mContext.getContentResolver();
         alarms = new HashMap<Integer, AlarmCore>();
@@ -90,7 +95,9 @@ public class Alarms implements IAlarmsManager {
                 if (cursor.moveToFirst()) {
                     do {
                         AlarmContainer container = new AlarmContainer(cursor, log, mContext);
-                        final AlarmCore a = new AlarmCore(container, mContext, log, mAlarmsScheduler, broadcaster);
+
+                        final AlarmCore a = new AlarmCore(container, log, mAlarmsScheduler, broadcaster,
+                                PreferenceManager.getDefaultSharedPreferences(mContext), handlerFactory);
                         alarms.put(a.getId(), a);
                     } while (cursor.moveToNext());
                 }
@@ -131,7 +138,8 @@ public class Alarms implements IAlarmsManager {
     @Override
     public Alarm createNewAlarm() {
         AlarmContainer container = new AlarmContainer(log, mContext);
-        AlarmCore alarm = new AlarmCore(container, mContext, log, mAlarmsScheduler, broadcaster);
+        AlarmCore alarm = new AlarmCore(container, log, mAlarmsScheduler, broadcaster,
+                PreferenceManager.getDefaultSharedPreferences(mContext), handlerFactory);
         alarms.put(alarm.getId(), alarm);
         notifyAlarmListChangedListeners();
         return alarm;

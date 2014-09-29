@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
-import android.os.Message;
 import android.preference.PreferenceManager;
 
 import com.better.alarm.R;
@@ -154,7 +153,7 @@ public final class AlarmCore implements Alarm {
      * {@link PreferenceManager} stores {@link OnSharedPreferenceChangeListener}
      * in a {@link WeakHashMap}.
      */
-    private final OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
+    public final OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("prealarm_duration")) {
@@ -574,6 +573,7 @@ public final class AlarmCore implements Alarm {
 
             @Override
             protected void onPreAlarmTimedOut() {
+                // TODO this we do not need, see onFired()
                 transitionTo(fired);
             }
 
@@ -708,9 +708,9 @@ public final class AlarmCore implements Alarm {
             private boolean handled;
 
             @Override
-            public final boolean processMessage(Message msg) {
+            public final boolean processMessage(IMessage msg) {
                 handled = true;
-                switch (msg.what) {
+                switch (msg.what()) {
                 case ENABLE:
                     onEnable();
                     break;
@@ -724,7 +724,7 @@ public final class AlarmCore implements Alarm {
                     onDismiss();
                     break;
                 case CHANGE:
-                    onChange((AlarmChangeData) msg.obj);
+                    onChange((AlarmChangeData) msg.obj());
                     break;
                 case FIRED:
                     onFired();
@@ -745,7 +745,7 @@ public final class AlarmCore implements Alarm {
                     onDelete();
                     break;
                 default:
-                    throw new RuntimeException("Handling of message code " + msg.what + " is not implemented");
+                    throw new RuntimeException("Handling of message code " + msg.what() + " is not implemented");
                 }
                 return handled;
             }
