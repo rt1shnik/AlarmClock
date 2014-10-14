@@ -192,6 +192,11 @@ public class AlarmsListFragment extends ListFragment {
             return true;
         }
 
+        case R.id.list_context_menu_skip_occurence: {
+            alarms.skipNextOccurence(alarm);
+            return true;
+        }
+
         default:
             break;
         }
@@ -278,6 +283,8 @@ public class AlarmsListFragment extends ListFragment {
         if (alarm.isEnabled()) {
             menu.findItem(R.id.enable_alarm).setTitle(R.string.disable_alarm);
         }
+
+        menu.findItem(R.id.list_context_menu_skip_occurence).setVisible(alarm.getDaysOfWeek().isRepeatSet());
     }
 
     public void updateAlarmsList() {

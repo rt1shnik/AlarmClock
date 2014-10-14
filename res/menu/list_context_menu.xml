@@ -26,5 +26,8 @@
     <item
         android:id="@+id/delete_alarm"
         android:title="@string/delete_alarm"/>
+    <item
+        android:id="@+id/list_context_menu_skip_occurence"
+        android:title="@string/list_context_menu_skip_occurence"/>
 
 </menu>

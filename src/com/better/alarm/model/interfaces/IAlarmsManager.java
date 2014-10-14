@@ -62,6 +62,14 @@ public interface IAlarmsManager {
     public void enable(Alarm alarm, boolean enable);
 
     /**
+     * Enable of disable an alarm
+     * 
+     * @param alarm
+     * @param enable
+     */
+    public void skipNextOccurence(Alarm alarm);
+
+    /**
      * Return an AlarmCore object representing the alarm id in the database.
      * Returns null if no alarm exists.
      */

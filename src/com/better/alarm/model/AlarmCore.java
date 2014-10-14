@@ -181,6 +181,7 @@ public final class AlarmCore implements Alarm {
         public static final int REFRESH = 9;
         public static final int DELETE = 10;
         public static final int TIME_SET = 11;
+        public static final int SKIP_NEXT_OCCURENCE = 12;
 
         public final DisabledState disabledState;
         public final EnabledState enabledState;
@@ -188,6 +189,7 @@ public final class AlarmCore implements Alarm {
         public final EnableTransition enableTransition;
         public final PreAlarmSetState preAlarmSet;
         public final SetState set;
+        public final SkipOccurenceState skipOccurenceState;
         public final SnoozedState snoozed;
         public final PreAlarmFiredState preAlarmFired;
         public final PreAlarmSnoozedState preAlarmSnoozed;
@@ -201,6 +203,7 @@ public final class AlarmCore implements Alarm {
             enableTransition = new EnableTransition();
             preAlarmSet = new PreAlarmSetState();
             set = new SetState();
+            skipOccurenceState = new SkipOccurenceState();
             snoozed = new SnoozedState();
             preAlarmFired = new PreAlarmFiredState();
             preAlarmSnoozed = new PreAlarmSnoozedState();
@@ -212,6 +215,7 @@ public final class AlarmCore implements Alarm {
             addState(enableTransition);
             addState(preAlarmSet, enabledState);
             addState(set, enabledState);
+            addState(skipOccurenceState, enabledState);
             addState(snoozed, enabledState);
             addState(preAlarmFired, enabledState);
             addState(fired, enabledState);
@@ -244,6 +248,8 @@ public final class AlarmCore implements Alarm {
                         return "DELETE";
                     case TIME_SET:
                         return "TIME_SET";
+                    case SKIP_NEXT_OCCURENCE:
+                        return "SKIP_NEXT_OCCURENCE";
                     default:
                         return "UNKNOWN";
                     }
@@ -413,10 +419,36 @@ public final class AlarmCore implements Alarm {
             }
 
             @Override
+            protected void onSkipNextOccurence() {
+                if (container.getDaysOfWeek().isRepeatSet()) {
+                    transitionTo(skipOccurenceState);
+                } else throw new RuntimeException("should not be allowed to do this for not repeating alarms");
+            }
+
+            @Override
             public void exit() {
                 if (!alarmWillBeRescheduled(getCurrentMessage())) {
                     removeAlarm();
                 }
+            }
+        }
+
+        private class SkipOccurenceState extends AlarmState {
+            @Override
+            public void enter() {
+                broadcastAlarmState(Intents.ACTION_ALARM_SET_TO_SKIP_NEXT_OCCURENCE);
+            }
+
+            @Override
+            public void resume() {
+                // TODO rename calendar type
+                setAlarm(calculateNextTime(), CalendarType.AUTOSILENCE);
+            }
+
+            @Override
+            protected void onFired() {
+                // TODO possible notifications or whatever
+                transitionTo(enableTransition);
             }
         }
 
@@ -746,6 +778,9 @@ public final class AlarmCore implements Alarm {
                 case DELETE:
                     onDelete();
                     break;
+                case SKIP_NEXT_OCCURENCE:
+                    onSkipNextOccurence();
+                    break;
                 default:
                     throw new RuntimeException("Handling of message code " + msg.what + " is not implemented");
                 }
@@ -754,6 +789,10 @@ public final class AlarmCore implements Alarm {
 
             protected final void markNotHandled() {
                 handled = false;
+            }
+
+            protected void onSkipNextOccurence() {
+                markNotHandled();
             }
 
             protected void onEnable() {
@@ -843,6 +882,11 @@ public final class AlarmCore implements Alarm {
     @Override
     public void dismiss() {
         stateMachine.sendMessage(AlarmStateMachine.DISMISS);
+    }
+
+    @Override
+    public void skipNextOccurence() {
+        stateMachine.sendMessage(AlarmStateMachine.SKIP_NEXT_OCCURENCE);
     }
 
     @Override

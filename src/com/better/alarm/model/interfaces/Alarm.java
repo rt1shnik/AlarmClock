@@ -27,6 +27,8 @@ public interface Alarm {
 
     public void delete();
 
+    public void skipNextOccurence();
+
     public AlarmEditor edit();
 
     /**

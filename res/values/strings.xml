@@ -129,4 +129,5 @@
         <item>30</item>
     </string-array>
     <string name="alarm_alert_reschedule_text">Reschedule</string>
+    <string name="list_context_menu_skip_occurence">Skip next occurence</string>
 </resources>

@@ -264,4 +264,10 @@ public class Alarms implements IAlarmsManager {
             }
         }
     }
+
+    @Override
+    public void skipNextOccurence(Alarm alarm) {
+        alarm.skipNextOccurence();
+        notifyAlarmListChangedListeners();
+    }
 }

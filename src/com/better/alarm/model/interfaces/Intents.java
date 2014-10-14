@@ -107,4 +107,6 @@ public class Intents {
      * Broadcasted when someone wants to get last scheduled alarm.
      */
     public static final String REQUEST_LAST_SCHEDULED_ALARM = "com.better.alarm.model.interfaces.Intents.REQUEST_LAST_SCHEDULED_ALARM";
+
+    public static final String ACTION_ALARM_SET_TO_SKIP_NEXT_OCCURENCE = "com.better.alarm.model.interfaces.Intents.ACTION_ALARM_SET_TO_SKIP_NEXT_OCCURENCE";
 }
