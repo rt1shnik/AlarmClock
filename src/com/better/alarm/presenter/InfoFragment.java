@@ -64,7 +64,8 @@ public class InfoFragment extends Fragment implements ViewFactory {
                 if (intent.getAction().equals(Intents.ACTION_ALARM_SCHEDULED)) {
                     int id = intent.getIntExtra(Intents.EXTRA_ID, -1);
                     alarm = alarms.getAlarm(id);
-
+                    // TODO change the event! Must contain all info and not get
+                    // from alarm!
                     log.d(intent.toString() + " " + alarm.toString());
                     String format = android.text.format.DateFormat.is24HourFormat(context) ? DM24 : DM12;
                     Calendar calendar = alarm.isSnoozed() ? alarm.getSnoozedTime() : alarm.getNextTime();

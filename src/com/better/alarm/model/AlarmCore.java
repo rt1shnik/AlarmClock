@@ -436,12 +436,22 @@ public final class AlarmCore implements Alarm {
         private class SkipOccurenceState extends AlarmState {
             @Override
             public void enter() {
+                // TODO check only repeating alarms are allowed to skip!!!
                 broadcastAlarmState(Intents.ACTION_ALARM_SET_TO_SKIP_NEXT_OCCURENCE);
             }
 
             @Override
             public void resume() {
-                // TODO rename calendar type
+                // tell all the next alarm objects that we actually plan to fire
+                // next time
+                Calendar nextTime = calculateNextTime();
+                // tomorrow
+                nextTime.add(Calendar.DAY_OF_WEEK, 1);
+                // or maybe the next day?
+                nextTime.add(Calendar.DAY_OF_WEEK, container.getDaysOfWeek().getNextAlarm(nextTime));
+                setAlarm(nextTime, CalendarType.NORMAL);
+
+                // set an alarm to go out of skip
                 setAlarm(calculateNextTime(), CalendarType.AUTOSILENCE);
             }
 
@@ -450,6 +460,7 @@ public final class AlarmCore implements Alarm {
                 // TODO possible notifications or whatever
                 transitionTo(enableTransition);
             }
+
         }
 
         /** handles both snoozed and main for now */
@@ -733,9 +744,16 @@ public final class AlarmCore implements Alarm {
             return disabledState;
         }
 
+        /**
+         * Find a better solution! From now on multiple set alarms with the same
+         * calendar are supported.
+         */
+        @Deprecated
         private boolean alarmWillBeRescheduled(Message reason) {
-            boolean alarmWillBeRescheduled = reason.what == CHANGE && ((AlarmChangeData) reason.obj).enabled;
-            return alarmWillBeRescheduled;
+            return false;
+            // boolean alarmWillBeRescheduled = reason.what == CHANGE &&
+            // ((AlarmChangeData) reason.obj).enabled;
+            // return alarmWillBeRescheduled;
         }
 
         private class AlarmState extends State {
