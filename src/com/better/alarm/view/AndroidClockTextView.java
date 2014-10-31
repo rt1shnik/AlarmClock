@@ -16,8 +16,6 @@
 
 package com.better.alarm.view;
 
-import org.acra.ACRA;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -67,7 +65,6 @@ public class AndroidClockTextView extends TextView {
             paint.setTypeface(mUseClockTypeface ? sClockTypeface : sStandardTypeface);
         } catch (RuntimeException e) {
             Logger.getDefaultLogger().e(e.getMessage());
-            ACRA.getErrorReporter().handleSilentException(e);
             paint.setTypeface(sStandardTypeface);
         }
     }

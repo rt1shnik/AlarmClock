@@ -22,8 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.acra.ACRA;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -164,7 +162,7 @@ public class Alarms implements IAlarmsManager {
 
         /**
          * First comes on Weekdays, than on weekends and then the rest
-         * 
+         *
          * @param alarm
          * @return
          */
@@ -204,7 +202,7 @@ public class Alarms implements IAlarmsManager {
 
     /**
      * A convenience method to enable or disable an alarm
-     * 
+     *
      * @param enabled
      *            corresponds to the ENABLED column
      * @throws AlarmNotFoundException
@@ -242,7 +240,6 @@ public class Alarms implements IAlarmsManager {
         public void onFinish() {
             String message = "After " + RETRY_TOTAL_TIME + " still was not able to query";
             log.e(message);
-            ACRA.getErrorReporter().handleSilentException(new Exception(message));
         }
 
         @Override

@@ -1,7 +1,5 @@
 package com.better.alarm.presenter;
 
-import org.acra.ACRA;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,9 +19,9 @@ import com.google.common.base.Preconditions;
 
 /**
  * This class handles options menu and action bar
- * 
+ *
  * @author Kate
- * 
+ *
  */
 public class ActionBarHandler {
 
@@ -39,7 +37,7 @@ public class ActionBarHandler {
 
     /**
      * Delegate {@link Activity#onCreateOptionsMenu(Menu)}
-     * 
+     *
      * @param menu
      * @param inflater
      * @param actionBar
@@ -72,7 +70,7 @@ public class ActionBarHandler {
 
     /**
      * Delegate {@link Activity#onOptionsItemSelected(MenuItem)}
-     * 
+     *
      * @param item
      * @return
      */
@@ -172,7 +170,6 @@ public class ActionBarHandler {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ACRA.getErrorReporter().handleSilentException(new Exception(report.getText().toString()));
             }
         });
         builder.setTitle(R.string.bugreport);

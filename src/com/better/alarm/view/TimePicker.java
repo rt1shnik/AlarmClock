@@ -18,8 +18,6 @@ package com.better.alarm.view;
 
 import java.text.DateFormatSymbols;
 
-import org.acra.ACRA;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Parcel;
@@ -545,7 +543,6 @@ public class TimePicker extends TimerSetupView implements Button.OnClickListener
             } catch (Exception e) {
                 mInputPointer = -1;
                 mInput = null;
-                ACRA.getErrorReporter().handleSilentException(e);
             }
         }
 

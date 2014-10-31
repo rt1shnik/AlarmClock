@@ -17,8 +17,6 @@
 
 package com.better.alarm.model;
 
-import org.acra.ACRA;
-
 import android.content.Context;
 
 import com.better.alarm.model.interfaces.IAlarmsManager;
@@ -45,7 +43,6 @@ public class AlarmsManager {
             sModelInstance = new Alarms(context, logger, new AlarmsScheduler(context, logger));
         } else {
             sModelInstance = new Alarms(context, logger, new AlarmsScheduler(context, logger));
-            ACRA.getErrorReporter().handleException(new Exception("Attept to reinitialize!"));
         }
     }
 }
