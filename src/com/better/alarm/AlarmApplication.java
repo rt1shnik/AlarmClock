@@ -48,8 +48,8 @@ public class AlarmApplication extends Application {
     @Override
     public void onCreate() {
         DynamicThemeHandler.init(this);
-        setTheme(DynamicThemeHandler.getInstance().getIdForName(DynamicThemeHandler.DEFAULT));
-
+        // setTheme(DynamicThemeHandler.getInstance().getIdForName(DynamicThemeHandler.DEFAULT));
+        setTheme(DynamicThemeHandler.getInstance().getIdForName("dark"));
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");

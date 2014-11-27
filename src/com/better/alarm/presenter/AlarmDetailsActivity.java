@@ -19,6 +19,7 @@ package com.better.alarm.presenter;
 
 import java.util.Calendar;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -56,7 +57,7 @@ import com.github.androidutils.logger.Logger;
  * Manages each alarm
  */
 public class AlarmDetailsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener,
-        OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
+OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
     public final static String M12 = "h:mm aa";
     public final static String M24 = "kk:mm";
 
@@ -82,6 +83,9 @@ public class AlarmDetailsActivity extends PreferenceActivity implements Preferen
     protected void onCreate(Bundle icicle) {
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmDetailsActivity.class.getName()));
         super.onCreate(icicle);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.action_bar_color));
 
         if (!getResources().getBoolean(R.bool.isTablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -248,16 +252,16 @@ public class AlarmDetailsActivity extends PreferenceActivity implements Preferen
      * outState.putParcelable(KEY_TIME_PICKER_BUNDLE,
      * mTimePickerDialog.onSaveInstanceState()); mTimePickerDialog.dismiss(); }
      * mTimePickerDialog = null; } }
-     * 
+     *
      * @Override protected void onRestoreInstanceState(Bundle state) {
      * super.onRestoreInstanceState(state);
-     * 
+     *
      * Alarm alarmFromBundle = state.getParcelable(KEY_ORIGINAL_ALARM); if
      * (alarmFromBundle != null) { mOriginalAlarm = alarmFromBundle; }
-     * 
+     *
      * alarmFromBundle = state.getParcelable(KEY_CURRENT_ALARM); if
      * (alarmFromBundle != null) { updatePrefs(alarmFromBundle); }
-     * 
+     *
      * Bundle b = state.getParcelable(KEY_TIME_PICKER_BUNDLE); if (b != null) {
      * showTimePicker(); mTimePickerDialog.onRestoreInstanceState(b); } }
      */
@@ -328,13 +332,13 @@ public class AlarmDetailsActivity extends PreferenceActivity implements Preferen
         AlarmEditor editor = alarm.edit();
         //@formatter:off
         editor.setEnabled(mEnabledPref.isChecked())
-              .setHour(mHour)
-              .setMinutes(mMinute)
-              .setDaysOfWeek(mRepeatPref.getDaysOfWeek())
-              .setVibrate(true)
-              .setLabel(mLabel.getText().toString())
-              .setAlert(mAlarmPref.getAlert())
-              .setPrealarm(mPreAlarmPref.isChecked());
+        .setHour(mHour)
+        .setMinutes(mMinute)
+        .setDaysOfWeek(mRepeatPref.getDaysOfWeek())
+        .setVibrate(true)
+        .setLabel(mLabel.getText().toString())
+        .setAlert(mAlarmPref.getAlert())
+        .setPrealarm(mPreAlarmPref.isChecked());
         //@formatter:on
         editor.commit();
         isNewAlarm = false;
@@ -343,14 +347,14 @@ public class AlarmDetailsActivity extends PreferenceActivity implements Preferen
 
     private void deleteAlarm() {
         new AlertDialog.Builder(this).setTitle(getString(R.string.delete_alarm))
-                .setMessage(getString(R.string.delete_alarm_confirm))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface d, int w) {
-                        alarms.delete(alarm);
-                        finish();
-                    }
-                }).setNegativeButton(android.R.string.cancel, null).show();
+        .setMessage(getString(R.string.delete_alarm_confirm))
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int w) {
+                alarms.delete(alarm);
+                finish();
+            }
+        }).setNegativeButton(android.R.string.cancel, null).show();
     }
 
     private void revert() {

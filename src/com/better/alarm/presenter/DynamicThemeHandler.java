@@ -36,7 +36,7 @@ public class DynamicThemeHandler {
     }
 
     public int getIdForName(String name) {
-        String activeThemeName = sp.getString(KEY_THEME, "green");
+        String activeThemeName = sp.getString(KEY_THEME, "dark");
         Map<String, Integer> activeThemeMap = themes.get(activeThemeName);
         Integer themeForName = activeThemeMap.get(name);
         return themeForName;

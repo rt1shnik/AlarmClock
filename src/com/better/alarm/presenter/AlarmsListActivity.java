@@ -17,6 +17,7 @@
 
 package com.better.alarm.presenter;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -44,6 +45,8 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmsListActivity.class.getName()));
         super.onCreate(savedInstanceState);
 
+        ActionBar actionBar = getActionBar();
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.action_bar_color));
         mActionBarHandler = new ActionBarHandler(this);
 
         boolean isTablet = !getResources().getBoolean(R.bool.isTablet);
