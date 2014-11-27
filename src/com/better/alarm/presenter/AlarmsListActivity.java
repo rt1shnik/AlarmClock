@@ -76,9 +76,6 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
     @Override
     protected void onResume() {
-        reqisterRecieverToGetPadding();
-        requestForGetPaddindForSosButton();
-
         super.onResume();
 
         View nextAlarmFragment = findViewById(R.id.list_activity_info_fragment);
@@ -87,6 +84,9 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         } else {
             nextAlarmFragment.setVisibility(View.GONE);
         }
+
+        reqisterRecieverToGetPadding();
+        requestForGetPaddindForSosButton();
     }
 
     @Override
@@ -98,7 +98,6 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
     @Override
     public void onPanelClosed(int featureId, Menu menu) {
-        requestToShowArrow();
         super.onPanelClosed(featureId, menu);
     }
 
