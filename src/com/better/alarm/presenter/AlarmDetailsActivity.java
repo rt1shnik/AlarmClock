@@ -94,6 +94,8 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
         // Override the default content view.
         setContentView(R.layout.details_activity);
 
+        setPadding();
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         // TODO Stop using preferences for this view. Save on done, not after
@@ -157,6 +159,10 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
         }
     }
 
+    private void setPadding() {
+        findViewById(R.id.rootView).setPadding(0, 0, 0, AlarmsListActivity.getmPadding());
+    }
+
     private final OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -166,6 +172,7 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
 
     @Override
     public void onResume() {
+        AlarmsListActivity.requestForGetPaddindForSosButton();
         super.onResume();
         sp.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
         refreshPrealarmVisibility();
@@ -185,6 +192,8 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
         super.onPause();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(
                 onSharedPreferenceChangeListener);
+
+        AlarmsListActivity.requestToShowArrow();
     }
 
     /**

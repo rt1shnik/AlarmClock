@@ -19,9 +19,13 @@ package com.better.alarm.presenter;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,13 +41,16 @@ import com.better.alarm.presenter.TimePickerDialogFragment.AlarmTimePickerDialog
  * This activity displays a list of alarms and optionally a details fragment.
  */
 public class AlarmsListActivity extends Activity implements AlarmTimePickerDialogHandler {
-
+    private static int mPadding;
+    private static AlarmsListActivity mInstance;
     private ActionBarHandler mActionBarHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmsListActivity.class.getName()));
         super.onCreate(savedInstanceState);
+
+        mInstance = this;
 
         ActionBar actionBar = getActionBar();
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.action_bar_color));
@@ -69,6 +76,9 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
     @Override
     protected void onResume() {
+        reqisterRecieverToGetPadding();
+        requestForGetPaddindForSosButton();
+
         super.onResume();
 
         View nextAlarmFragment = findViewById(R.id.list_activity_info_fragment);
@@ -77,6 +87,39 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         } else {
             nextAlarmFragment.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        AlarmsListActivity.requestToShowArrow();
+    }
+
+    @Override
+    public void onPanelClosed(int featureId, Menu menu) {
+        requestToShowArrow();
+        super.onPanelClosed(featureId, menu);
+    }
+
+    public static void requestForGetPaddindForSosButton() {
+        Intent intent = new Intent("com.louka.launcher.sosbutton.padding");
+        AlarmsListActivity.mInstance.sendBroadcast(intent);
+    }
+
+    private void reqisterRecieverToGetPadding() {
+        final PaddingReciever paddingReciever = new PaddingReciever();
+        IntentFilter intentFilter = new IntentFilter("launcher.send.padding.for.sos.button");
+        getApplication().registerReceiver(paddingReciever, intentFilter);
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                getApplication().unregisterReceiver(paddingReciever);
+            }
+        };
+        handler.postDelayed(runnable, 2000);
     }
 
     @Override
@@ -91,32 +134,6 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
             return true;
         } else return mActionBarHandler.onOptionsItemSelected(item);
     }
-
-    // private final ShowDetailsStrategy showDetailsInFragmentStrategy = new
-    // ShowDetailsStrategy() {
-    //
-    // @Override
-    // public void showDetails(Alarm alarm) {
-    // Intent intent = new Intent();
-    // intent.putExtra(Intents.EXTRA_ID, alarm.getId());
-    //
-    // // Check what fragment is currently shown, replace if needed.
-    // AlarmDetailsFragment details = (AlarmDetailsFragment)
-    // getFragmentManager().findFragmentById(
-    // R.id.alarmsDetailsFragmentFrame);
-    // if (details == null || details.getIntent() != intent) {
-    // // Make new fragment to show this selection.
-    // details = AlarmDetailsFragment.newInstance(intent);
-    //
-    // // Execute a transaction, replacing any existing fragment
-    // // with this one inside the frame.
-    // FragmentTransaction ft = getFragmentManager().beginTransaction();
-    // ft.replace(R.id.alarmsDetailsFragmentFrame, details);
-    // ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-    // ft.commit();
-    // }
-    // }
-    // };
 
     private final ShowDetailsStrategy showDetailsInActivityFragment = new ShowDetailsStrategy() {
         @Override
@@ -143,5 +160,35 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         // this must be invoked synchronously on the Pickers's OK button onClick
         // otherwise fragment is closed too soon and the time is not updated
         alarmsListFragment.updateAlarmsList();
+    }
+
+    public static int getmPadding() {
+        return mPadding;
+    }
+
+    // Send back broadcast with padding for SOS button state.
+    public static class PaddingReciever extends BroadcastReceiver {
+        private final String PADDING = "padding";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra(PADDING)) {
+                int padding = intent.getIntExtra(PADDING, 0);
+                setPadding(padding);
+            }
+        }
+
+        private void setPadding(int padding2) {
+            if (AlarmsListActivity.mInstance != null) {
+                AlarmsListActivity.mInstance.getWindow().getDecorView().findViewById(R.id.rootView)
+                .setPadding(0, 0, 0, padding2);
+                mPadding = padding2;
+            }
+        }
+    }
+
+    public static void requestToShowArrow() {
+        Intent intent = new Intent("com.louka.launcher.sosbutton.show");
+        AlarmsListActivity.mInstance.sendBroadcast(intent);
     }
 }
