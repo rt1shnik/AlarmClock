@@ -20,4 +20,4 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:textAppearance="?android:attr/textAppearanceSmall"
-    android:textColor="?android:attr/textColorTertiary" />
+    android:textColor="@android:color/white" />

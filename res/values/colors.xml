@@ -45,5 +45,5 @@
     <drawable name="notification_template_icon_low_bg">#0cffffff</drawable>
 
     <color name="pressed_greenactionbar">#CC99CC00</color>
-    <color name="action_bar_color">#9d1442</color>
+    <color name="action_bar_color">#626f75</color>
 </resources>
