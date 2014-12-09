@@ -26,7 +26,7 @@
         <item>120</item>
     </string-array>
     <!-- Setting labels on Set alarm screen: Prealarm -->
-    <string name="alarm_prealarm">Gentle pre-alarm</string>
+    <string name="alarm_prealarm">Doux pré-reveil</string>
     <!-- Pre-alarm duration title -->
     <string name="prealarm_duration_title" tools:ignore="MissingTranslation">Pre-alarm duration</string>
     <!--
