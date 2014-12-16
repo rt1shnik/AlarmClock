@@ -56,14 +56,14 @@
                 android:layout_height="wrap_content"
                 useClockTypeface="false"
                 android:paddingRight="6dip"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <com.better.alarm.view.AndroidClockTextView
                 android:id="@+id/digital_clock_am_pm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 useClockTypeface="false"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold" />
         </com.better.alarm.view.DigitalClock>
 
@@ -72,14 +72,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="2dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
          <TextView
             android:id="@+id/list_row_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="2dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorTertiary" />
     </LinearLayout>
 

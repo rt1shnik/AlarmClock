@@ -16,13 +16,19 @@
 package com.better.alarm;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.better.alarm.model.AlarmCore;
 import com.better.alarm.model.Alarms;
@@ -98,6 +104,27 @@ public class AlarmApplication extends Application {
         Configuration config = new Configuration();
         config.locale = locale;
         context.getResources().updateConfiguration(config, null);
-
     }
+
+    public static List<TextView> udateTypeFace(Context context, ViewGroup containerView) {
+        List<TextView> buttons = new ArrayList<TextView>();
+        int childCount = containerView.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = containerView.getChildAt(i);
+            if (view instanceof ViewGroup) {
+                buttons.addAll(udateTypeFace(context, (ViewGroup) view));
+            }
+            if (view instanceof TextView) {
+                TextView button = (TextView) view;
+                buttons.add(button);
+                button.setTypeface(getFontLatoBold(context));
+            }
+        }
+        return buttons;
+    }
+
+    public static Typeface getFontLatoBold(Context context) {
+        return Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Bold.ttf");
+    }
+
 }

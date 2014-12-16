@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
 import com.better.alarm.model.AlarmsManager;
 import com.better.alarm.model.DaysOfWeek;
@@ -136,6 +137,8 @@ public class AlarmsListFragment extends ListFragment {
             } else {
                 label.setVisibility(View.GONE);
             }
+
+            AlarmApplication.udateTypeFace(getActivity(), (ViewGroup) rowView);
 
             return rowView;
         }

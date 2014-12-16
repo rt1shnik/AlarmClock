@@ -38,6 +38,7 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -94,7 +95,9 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
         }
 
         // Override the default content view.
-        setContentView(R.layout.details_activity);
+        ViewGroup rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.details_activity, null);
+        setContentView(rootView);
+        AlarmApplication.udateTypeFace(this, rootView);
 
         setPadding();
 

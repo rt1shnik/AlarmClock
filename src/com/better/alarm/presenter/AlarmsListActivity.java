@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
@@ -63,7 +64,10 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        setContentView(R.layout.list_activity);
+        ViewGroup rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.list_activity, null);
+        setContentView(rootView);
+        AlarmApplication.udateTypeFace(this, rootView);
+
         alarmsListFragment = (AlarmsListFragment) getFragmentManager().findFragmentById(
                 R.id.list_activity_list_fragment);
 
