@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.better.alarm.AlarmApplication;
 import com.better.alarm.model.AlarmsManager;
 import com.better.alarm.model.interfaces.Alarm;
 import com.better.alarm.model.interfaces.AlarmNotFoundException;
@@ -23,6 +24,7 @@ public class TransparentActivity extends Activity implements AlarmTimePickerDial
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        AlarmApplication.updateFrLanguage(this);
         alarmsManager = AlarmsManager.getAlarmsManager();
         log = Logger.getDefaultLogger();
         Intent intent = getIntent();

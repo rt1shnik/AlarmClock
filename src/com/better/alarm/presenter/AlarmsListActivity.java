@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
 import com.better.alarm.model.interfaces.Alarm;
 import com.better.alarm.model.interfaces.Intents;
@@ -47,6 +48,7 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AlarmApplication.updateFrLanguage(this);
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmsListActivity.class.getName()));
         super.onCreate(savedInstanceState);
 

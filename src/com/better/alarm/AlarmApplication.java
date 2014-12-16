@@ -16,8 +16,11 @@
 package com.better.alarm;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.view.ViewConfiguration;
 
@@ -87,5 +90,14 @@ public class AlarmApplication extends Application {
 
         logger.d("onCreate");
         super.onCreate();
+    }
+
+    public static void updateFrLanguage(Context context) {
+        Locale locale = Locale.FRANCE;
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        context.getResources().updateConfiguration(config, null);
+
     }
 }

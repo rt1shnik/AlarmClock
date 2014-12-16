@@ -42,6 +42,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
 import com.better.alarm.model.AlarmsManager;
 import com.better.alarm.model.interfaces.Alarm;
@@ -81,6 +82,7 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
 
     @Override
     protected void onCreate(Bundle icicle) {
+        AlarmApplication.updateFrLanguage(this);
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmDetailsActivity.class.getName()));
         super.onCreate(icicle);
 
