@@ -7,6 +7,11 @@
     android:background="@drawable/background_7"
     android:orientation="vertical" >
 
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/launch_header" />
+
     <fragment
         android:id="@+id/list_activity_list_fragment"
         android:name="com.better.alarm.presenter.AlarmsListFragment"
@@ -20,5 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         tools:layout="@layout/info_fragment" />
+
+    <Button
+        android:id="@+id/valider"
+        style="@style/validerButton" />
 
 </LinearLayout>

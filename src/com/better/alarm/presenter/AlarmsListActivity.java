@@ -17,7 +17,6 @@
 
 package com.better.alarm.presenter;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,8 +27,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.better.alarm.AlarmApplication;
@@ -45,19 +44,15 @@ import com.better.alarm.presenter.TimePickerDialogFragment.AlarmTimePickerDialog
 public class AlarmsListActivity extends Activity implements AlarmTimePickerDialogHandler {
     private static int mPadding;
     private static AlarmsListActivity mInstance;
-    private ActionBarHandler mActionBarHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AlarmApplication.updateFrLanguage(this);
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmsListActivity.class.getName()));
+        getActionBar().hide();
         super.onCreate(savedInstanceState);
 
         mInstance = this;
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.action_bar_color));
-        mActionBarHandler = new ActionBarHandler(this);
 
         boolean isTablet = !getResources().getBoolean(R.bool.isTablet);
         if (isTablet) {
@@ -78,6 +73,29 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         } else {
             alarmsListFragment.setShowDetailsStrategy(showDetailsInActivityFragment);
         }
+
+        View button = findViewById(R.id.valider);
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AlarmsListActivity.this, AlarmDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        OnClickListener goBackOnClickListenner = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        };
+
+        View back = findViewById(R.id.go_to_prev_page);
+        back.setOnClickListener(goBackOnClickListenner);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(goBackOnClickListenner);
     }
 
     @Override
@@ -127,19 +145,6 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         handler.postDelayed(runnable, 2000);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return mActionBarHandler.onCreateOptionsMenu(menu, getMenuInflater(), getActionBar());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_add_alarm) {
-            showDetailsInActivityFragment.showDetails(null);
-            return true;
-        } else return mActionBarHandler.onOptionsItemSelected(item);
-    }
-
     private final ShowDetailsStrategy showDetailsInActivityFragment = new ShowDetailsStrategy() {
         @Override
         public void showDetails(Alarm alarm) {
@@ -186,7 +191,7 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         private void setPadding(int padding2) {
             if (AlarmsListActivity.mInstance != null) {
                 AlarmsListActivity.mInstance.getWindow().getDecorView().findViewById(R.id.rootView)
-                .setPadding(0, 0, 0, padding2);
+                        .setPadding(0, 0, 0, padding2);
                 mPadding = padding2;
             }
         }

@@ -353,4 +353,6 @@
     <string name="hours_label_description">hours</string>
     <string name="minutes_label_description">minutes</string>
     <string name="seconds_label_description">seconds</string>
+    
+    <string name="valider" tools:ignore="MissingTranslation">Ajouter un réveil</string>
 </resources>
