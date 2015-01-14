@@ -355,4 +355,6 @@
     <string name="seconds_label_description">seconds</string>
     
     <string name="valider" tools:ignore="MissingTranslation">Ajouter un réveil</string>
+    
+    <string name="hold_to_dismiss">Hold to dismiss</string>
 </resources>

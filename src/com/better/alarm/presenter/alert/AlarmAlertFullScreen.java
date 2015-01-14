@@ -55,7 +55,7 @@ import com.github.androidutils.logger.Logger;
  * wallpaper as the background.
  */
 public class AlarmAlertFullScreen extends Activity implements AlarmTimePickerDialogHandler,
-        OnAlarmTimePickerCanceledListener {
+OnAlarmTimePickerCanceledListener {
     private static final boolean LONGCLICK_DISMISS_DEFAULT = false;
     private static final String LONGCLICK_DISMISS_KEY = "longclick_dismiss_key";
     private static final String DEFAULT_VOLUME_BEHAVIOR = "2";
@@ -204,7 +204,7 @@ public class AlarmAlertFullScreen extends Activity implements AlarmTimePickerDia
             @Override
             public void onClick(View v) {
                 if (longClickToDismiss) {
-                    dismissButton.setText("Hold to dismiss");
+                    dismissButton.setText(R.string.hold_to_dismiss);
                 } else {
                     dismiss();
                 }
