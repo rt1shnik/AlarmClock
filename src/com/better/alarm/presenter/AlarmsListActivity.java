@@ -88,7 +88,9 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
             @Override
             public void onClick(View v) {
-                finish();
+                Intent i = new Intent(Intent.ACTION_MAIN);
+                i.addCategory(Intent.CATEGORY_HOME);
+                startActivity(i);
             }
         };
 
