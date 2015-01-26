@@ -17,7 +17,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="6674495003718166674">"Horloge"</string>
-    <string name="alarm_list_title" msgid="7589940465292950600">"Alarmes"</string>
+    <string name="alarm_list_title" msgid="7589940465292950600">"Sidonie Réveil"</string>
     <string name="add_alarm" msgid="5976616107390962899">"Ajouter alarme"</string>
     <string name="menu_desk_clock" msgid="3241995064554071588">"Horloge de bureau"</string>
     <string name="menu_edit_alarm" msgid="7204602994918829751">"Modifier l\'alarme"</string>
