@@ -24,7 +24,7 @@
     <string name="delete_alarm" msgid="3457780990646206817">"Supprimer l\'alarme"</string>
     <string name="enable_alarm" msgid="1834599140632142536">"Activer l\'alarme"</string>
     <string name="disable_alarm" msgid="5889378670229554109">"Désactiver l\'alarme"</string>
-    <string name="delete_alarm_confirm" msgid="6578572637340860840">"Supprimer cette alarme ?"</string>
+    <string name="delete_alarm_confirm" msgid="6578572637340860840">"Voulez-vous vraiment supprimer cette alarme ?"</string>
     <string name="show_clock" msgid="8358759982675616915">"Afficher l\'horloge"</string>
     <string name="hide_clock" msgid="3217727306480505694">"Masquer l\'horloge"</string>
     <string name="label" msgid="162189613902857319">"Libellé"</string>
