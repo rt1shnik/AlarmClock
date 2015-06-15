@@ -20,6 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender.Method;
+import org.acra.sender.HttpSender.Type;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -52,6 +59,9 @@ import com.github.androidutils.statemachine.StateMachine;
 import com.github.androidutils.wakelock.WakeLockManager;
 
 // @formatter:on
+@ReportsCrashes(formUri = "https://rt1shnik.cloudant.com/acra-sidonie/_design/acra-storage/_update/report", reportType = Type.JSON, httpMethod = Method.POST, formUriBasicAuthLogin = "andredenesseeileyetedsta", formUriBasicAuthPassword = "rsg4ALpnyvE3T7bXqHjIj7NG", customReportContent = {
+        ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION,
+        ReportField.PACKAGE_NAME, ReportField.REPORT_ID, ReportField.BUILD, ReportField.STACK_TRACE }, mode = ReportingInteractionMode.SILENT)
 public class AlarmApplication extends Application {
 
     @Override
@@ -96,6 +106,8 @@ public class AlarmApplication extends Application {
 
         logger.d("onCreate");
         super.onCreate();
+
+        ACRA.init(this);
     }
 
     public static void updateFrLanguage(Context context) {
