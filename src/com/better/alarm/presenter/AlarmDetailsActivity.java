@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -83,6 +84,9 @@ OnCancelListener, TimePickerDialogFragment.AlarmTimePickerDialogHandler {
 
     @Override
     protected void onCreate(Bundle icicle) {
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         AlarmApplication.updateFrLanguage(this);
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmDetailsActivity.class.getName()));
         super.onCreate(icicle);

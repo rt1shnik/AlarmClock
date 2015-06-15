@@ -6,6 +6,94 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_7"
     android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/notification_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="3dp"
+        android:paddingTop="2dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.better.alarm.launcher.view.NetworkLevelTriangleStyle
+                android:layout_marginLeft="5dp"
+                android:id="@+id/network_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="2dp" >
+            </com.better.alarm.launcher.view.NetworkLevelTriangleStyle>
+            
+            <com.better.alarm.launcher.view.NetworkLevelTriangleStyleSecondSim
+                android:layout_marginLeft="5dp"
+                android:id="@+id/network_level_sim2"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@+id/network_level"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="2dp" >
+            </com.better.alarm.launcher.view.NetworkLevelTriangleStyleSecondSim>
+            
+            <com.better.alarm.launcher.view.DataTransferIndicator
+                android:id="@+id/network_data_transfer_indicator"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@+id/network_level_sim2"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="2dp" >
+            </com.better.alarm.launcher.view.DataTransferIndicator>
+
+            <com.better.alarm.launcher.view.DigitalClock
+                android:id="@+id/clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="#e0ffffff"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/batterie_level"
+                android:gravity="right" >
+
+                <com.better.alarm.launcher.view.WifiIndicator
+                    android:id="@+id/wifi_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="1dp"
+                   android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_notification_bar_network" >
+                </com.better.alarm.launcher.view.WifiIndicator>
+
+                <com.better.alarm.launcher.view.BluetoothIndicator
+                    android:id="@+id/blutooth_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                   android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_notification_bar_network" >
+                </com.better.alarm.launcher.view.BluetoothIndicator>
+            </LinearLayout>
+
+            <com.better.alarm.launcher.view.BatterieLevel
+                android:id="@+id/batterie_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp" >
+            </com.better.alarm.launcher.view.BatterieLevel>
+        </RelativeLayout>
+    </LinearLayout>
+    
 
     <include
         android:layout_width="fill_parent"

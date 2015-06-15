@@ -30,6 +30,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
@@ -47,9 +49,12 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         AlarmApplication.updateFrLanguage(this);
         setTheme(DynamicThemeHandler.getInstance().getIdForName(AlarmsListActivity.class.getName()));
-        getActionBar().hide();
+        // getActionBar().hide();
         super.onCreate(savedInstanceState);
 
         mInstance = this;
