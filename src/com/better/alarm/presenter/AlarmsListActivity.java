@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -35,6 +36,13 @@ import android.view.WindowManager;
 
 import com.better.alarm.AlarmApplication;
 import com.better.alarm.R;
+import com.better.alarm.launcher.view.BatterieLevel;
+import com.better.alarm.launcher.view.BluetoothIndicator;
+import com.better.alarm.launcher.view.DataTransferIndicator;
+import com.better.alarm.launcher.view.DigitalClock;
+import com.better.alarm.launcher.view.NetworkLevelTriangleStyle;
+import com.better.alarm.launcher.view.NetworkLevelTriangleStyleSecondSim;
+import com.better.alarm.launcher.view.WifiIndicator;
 import com.better.alarm.model.interfaces.Alarm;
 import com.better.alarm.model.interfaces.Intents;
 import com.better.alarm.presenter.AlarmsListFragment.ShowDetailsStrategy;
@@ -66,6 +74,8 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
 
         ViewGroup rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.list_activity, null);
         setContentView(rootView);
+
+        setNotificationBarToBlackTheme();
         AlarmApplication.udateTypeFace(this, rootView);
 
         alarmsListFragment = (AlarmsListFragment) getFragmentManager().findFragmentById(
@@ -198,7 +208,7 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
         private void setPadding(int padding2) {
             if (AlarmsListActivity.mInstance != null) {
                 AlarmsListActivity.mInstance.getWindow().getDecorView().findViewById(R.id.rootView)
-                        .setPadding(0, 0, 0, padding2);
+                .setPadding(0, 0, 0, padding2);
                 mPadding = padding2;
             }
         }
@@ -207,5 +217,34 @@ public class AlarmsListActivity extends Activity implements AlarmTimePickerDialo
     public static void requestToShowArrow() {
         Intent intent = new Intent("com.louka.launcher.sosbutton.show");
         AlarmsListActivity.mInstance.sendBroadcast(intent);
+    }
+
+    public void setNotificationBarToBlackTheme() {
+        Activity context = this;
+        View notificationBar = context.findViewById(R.id.notification_bar);
+        notificationBar.setBackgroundResource(android.R.color.white);
+
+        DigitalClock digitalClock = (DigitalClock) context.findViewById(R.id.clock);
+        digitalClock.setTextColor(Color.parseColor("#e0000000"));
+
+        NetworkLevelTriangleStyle networkLevel = (NetworkLevelTriangleStyle) context.findViewById(R.id.network_level);
+        networkLevel.setTheme(NetworkLevelTriangleStyle.THEME_BLACK);
+
+        NetworkLevelTriangleStyleSecondSim networkLevelSecondSim = (NetworkLevelTriangleStyleSecondSim) context
+                .findViewById(R.id.network_level_sim2);
+        networkLevelSecondSim.setTheme(NetworkLevelTriangleStyle.THEME_BLACK);
+
+        BluetoothIndicator bluetooth = (BluetoothIndicator) context.findViewById(R.id.blutooth_indicator);
+        bluetooth.setTheme(BluetoothIndicator.THEME_BLACK);
+
+        WifiIndicator wifiIndicator = (WifiIndicator) context.findViewById(R.id.wifi_indicator);
+        wifiIndicator.setTheme(WifiIndicator.THEME_BLACK);
+
+        DataTransferIndicator dataTransferIndicator = (DataTransferIndicator) context
+                .findViewById(R.id.network_data_transfer_indicator);
+        dataTransferIndicator.setTheme(DataTransferIndicator.THEME_BLACK);
+
+        BatterieLevel batterieLevel = (BatterieLevel) context.findViewById(R.id.batterie_level);
+        batterieLevel.setTheme(BatterieLevel.THEME_BLACK);
     }
 }

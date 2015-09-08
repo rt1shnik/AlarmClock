@@ -129,7 +129,9 @@ public class AlarmApplication extends Application {
             if (view instanceof TextView) {
                 TextView button = (TextView) view;
                 buttons.add(button);
-                button.setTypeface(getFontLatoBold(context));
+                if (button.getId() != R.id.clock) {
+                    button.setTypeface(getFontLatoBold(context));
+                }
             }
         }
         return buttons;

@@ -29,8 +29,15 @@ public final class TelephonyInfo {
         return isSIM2Ready;
     }
 
-    public boolean isDualSIM() {
-        return imsiSIM2 != null;
+    public boolean isDualSIM() {    	
+    	boolean isDual = imsiSIM2 != null;
+    	
+    	if(android.os.Build.MODEL.equals("Elephone_P3000S")){
+    		isDual = true;
+    	}
+    	
+    	System.out.println(android.os.Build.MODEL + " isDual?(): " + String.valueOf(isDual));    	
+        return isDual;
     }
 
     private TelephonyInfo() {
@@ -148,7 +155,7 @@ public final class TelephonyInfo {
     }
 
 
-    private static class GeminiMethodNotFoundException extends Exception {
+    public static class GeminiMethodNotFoundException extends Exception {
 
         private static final long serialVersionUID = -996812356902545308L;
 

@@ -4,16 +4,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.better.alarm.R;
-
 import android.content.Context;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.better.alarm.R;
+import com.better.alarm.launcher.view.TelephonyInfo.GeminiMethodNotFoundException;
 
 public class NetworkLevelTriangleStyle extends LinearLayout {
     public static final int THEME_BLACK = 0;
@@ -70,13 +72,14 @@ public class NetworkLevelTriangleStyle extends LinearLayout {
             if (mPhoneStateListener != null) {
                 listen(mPhoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
                         | PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
+                // listen(mPhoneStateListener, 32);
             }
         }
     }
 
-    public void listen(PhoneStateListener listener, int events) {
+    private void listen(PhoneStateListener listener, int events) {
         if (TelephonyInfo.getInstance(getContext()).isDualSIM()) {
-            listen(listener, events, getSimId());
+            listenV2(listener, events, getSimId());
         } else {
             mTelephonyManager.listen(listener, events);
         }
@@ -86,7 +89,65 @@ public class NetworkLevelTriangleStyle extends LinearLayout {
         return 0;
     }
 
-    public void listen(PhoneStateListener listener, int events, int simId) {
+    private void listenV2(PhoneStateListener listener, int events, int simId) {
+        try {
+            Class<?> telephonyClass = TelephonyManager.class;
+
+            String fileldName = "";
+            if (simId == 0) {
+                fileldName = "sRegistry";
+            } else {
+                fileldName = "sRegistry2";
+            }
+
+            Field field = telephonyClass.getDeclaredField(fileldName);
+            field.setAccessible(true);
+            Object iTelephonyRegistry = field.get(telephonyClass);
+
+            Class<?> phoneStateListenerCalss = PhoneStateListener.class;
+            // Field fieldListenner =
+            // phoneStateListenerCalss.getDeclaredField("callback");
+            // fieldListenner.setAccessible(true);
+
+            Method getCallbackMethod = phoneStateListenerCalss.getDeclaredMethod("getCallback");
+            Object phoneListennerCallback = getCallbackMethod.invoke(listener);
+            System.out.println(phoneListennerCallback.getClass());
+
+            Class<?>[] parameter = new Class[4];
+            parameter[0] = String.class;
+            parameter[1] = Class.forName("com.android.internal.telephony.IPhoneStateListener");
+            parameter[2] = int.class;
+            parameter[3] = boolean.class;
+
+            String pkgForDebug = getContext() != null ? getContext().getPackageName() : "<unknown>";
+            Object[] obParameter = new Object[4];
+            obParameter[0] = pkgForDebug;
+            obParameter[1] = phoneListennerCallback;
+            obParameter[2] = events;
+            obParameter[3] = true;
+
+            Method listenMethod = iTelephonyRegistry.getClass().getDeclaredMethod("listen", parameter);
+            listenMethod.invoke(iTelephonyRegistry, obParameter);
+
+            // try {
+            // getSimID = telephonyClass.getMethod("listenGemini", parameter);
+            // } catch (NoSuchMethodException e) {
+            // getSimID = telephonyClass.getMethod("listen", parameter);
+            // }
+            //
+            // Object[] obParameter = new Object[3];
+            // obParameter[0] = listener;
+            // obParameter[1] = events;
+            // obParameter[2] = simId;
+            // getSimID.invoke(mTelephonyManager, obParameter);
+            System.out.println("listenV2");
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void listen(PhoneStateListener listener, int events, int simId) {
         try {
             Class<?> telephonyClass = Class.forName(TelephonyManager.class.getName());
             Class<?>[] parameter = new Class[3];
@@ -232,7 +293,9 @@ public class NetworkLevelTriangleStyle extends LinearLayout {
         default:
             BACKGROUND_FOR_CURR_STATE = BACKGROUND_FOR_0;
             networkTypeView.setVisibility(GONE);
+            return;
         }
+        networkTypeView.setVisibility(View.VISIBLE);
     }
 
     class MyPhoneStateListenerMultiSim extends PhoneStateListener {
@@ -244,7 +307,40 @@ public class NetworkLevelTriangleStyle extends LinearLayout {
             super.onSignalStrengthsChanged(signalStrength);
             System.out.println(signalStrength.getGsmSignalStrength());
 
+            try {
+                int simId = getMySimId(signalStrength);
+                System.out.println("getMySimId: " + String.valueOf(simId));
+            } catch (GeminiMethodNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
             setStrange(signalStrength.getGsmSignalStrength());
+        }
+
+        private int getMySimId(SignalStrength signalStrength) throws GeminiMethodNotFoundException {
+            try {
+
+                Class<?> telephonyClass = Class.forName(signalStrength.getClass().getName());
+
+                // Class<?>[] parameter = new Class[1];
+                // parameter[0] = int.class;
+                Method getMySimId = telephonyClass.getMethod("getMySimId");
+
+                // Object[] obParameter = new Object[1];
+                // obParameter[0] = slotID;
+                Object ob_sim_id = getMySimId.invoke(signalStrength);
+
+                if (ob_sim_id != null) {
+                    int simId = Integer.parseInt(ob_sim_id.toString());
+                    return simId;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GeminiMethodNotFoundException("getMySimId");
+            }
+
+            return -1;
         }
 
         @Override
